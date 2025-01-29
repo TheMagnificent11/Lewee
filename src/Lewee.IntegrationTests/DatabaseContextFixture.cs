@@ -26,11 +26,16 @@ public abstract class DatabaseContextFixture<TDbContext, TDbSeeder> : IAsyncLife
     protected DatabaseContextFixture()
     {
         this.msSqlContainer = new MsSqlBuilder()
-            .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
+            .WithImage($"mcr.microsoft.com/mssql/server:{this.MsSqlImageVersion}")
             .WithPortBinding(1433, 1433) // Bind the standard MS SQL port
             .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(1433)) // Wait until the port is available
             .Build();
     }
+
+    /// <summary>
+    /// Gets the MS SQL image version e.g. "2022-latest"
+    /// </summary>
+    protected abstract string MsSqlImageVersion { get; }
 
     /// <summary>
     /// Gets the database connection string
