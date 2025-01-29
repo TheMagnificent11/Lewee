@@ -24,7 +24,7 @@ jobs:
           includePrerelease: true
       - name: Determine Version
         id: version
-        uses: gittools/actions/gitversion/setup@v3.1.11
+        uses: gittools/actions/gitversion/execute@v3.1.11
         with:
           useConfigFile: true
       - name: Install Dependencies
