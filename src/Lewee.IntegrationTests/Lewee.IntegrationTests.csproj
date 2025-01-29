@@ -5,6 +5,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" />
     <PackageReference Include="Respawn" />
+    <PackageReference Include="Testcontainers.MsSql" />
     <PackageReference Include="xunit.extensibility.core" />
   </ItemGroup>
 

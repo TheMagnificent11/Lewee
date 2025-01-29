@@ -8,40 +8,23 @@ on:
 jobs:
   buildAndTest:
     runs-on: ubuntu-latest
-    services:
-      lewee_sql:
-        image: mcr.microsoft.com/mssql/server:2022-latest
-        env:
-          ACCEPT_EULA: Y
-          SA_PASSWORD: <YourStrong@Passw0rd!>
-          MSSQL_PID: Express
-        ports:
-          - 5434:1433
-        volumes:
-          - mssql:/var/opt/mssql
-        options: >-
-          --health-cmd "/opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD -Q 'select 1' -b -o /dev/null"
-          --health-interval 60s
-          --health-timeout 30s
-          --health-start-period 20s
-          --health-retries 3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 0
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 7.0.*
+          dotnet-version: 8.0.*
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0
+        uses: gittools/actions/gitversion/setup@v3.1.11
         with:
-          versionSpec: '6.x'
+          versionSpec: '6.0.x'
           preferLatestVersion: true
           includePrerelease: true
       - name: Determine Version
         id: version
-        uses: gittools/actions/gitversion/execute@v0
+        uses: gittools/actions/gitversion/execute@v3.1.11
         with:
           useConfigFile: true
       - name: Install Dependencies
@@ -61,14 +44,14 @@ jobs:
           hide_complexity: false
           indicators: true
           output: both
-          
+
       #- name: Add Coverage PR Comment
       #  uses: marocchino/sticky-pull-request-comment@v2
       #  if: ${{ inputs.is-pr == true }}
       #  with:
       #    recreate: true
       #    path: code-coverage-results.md
-          
+
       - name: Pack
         run: dotnet pack ./Lewee.sln --configuration Release --nologo /p:PackageVersion=${{ steps.version.outputs.fullSemVer }} --output ./output
       - name: Publish to NuGet

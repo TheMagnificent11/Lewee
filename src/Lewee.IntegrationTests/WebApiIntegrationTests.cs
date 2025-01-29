@@ -60,13 +60,14 @@ public abstract class WebApiIntegrationTests<TEntryPoint, TFactory, TDbContextFi
     /// <inheritdoc />
     public virtual async Task InitializeAsync()
     {
+        await this.dbContextFixture.InitializeAsync();
         await this.dbContextFixture.ResetDatabase();
     }
 
     /// <inheritdoc />
-    public virtual Task DisposeAsync()
+    public virtual async Task DisposeAsync()
     {
-        return Task.CompletedTask;
+        await this.dbContextFixture.DisposeAsync();
     }
 
     /// <summary>
